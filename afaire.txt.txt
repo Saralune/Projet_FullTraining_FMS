@@ -1,0 +1,21 @@
+/****************NVLLE BRANCHE POUR NOUVELLE FOCNTIONNALITé******************/
+	
+	✔//Afficher la liste des formations (5 minimium par défaut)
+		✔//id, nom, durée (jour), courte descr, prix
+		✔//Résultat en particulier dans la console
+		✔//Premier commit sur la branch main
+		//Une branche pour chaque fonctionnalité
+	
+	//Menu : 
+		//- liste des formations
+		//- Afficher le contenu du panier
+		//- Ajouter une formation à son panier (possible d'ajouter plusieurs fois la même)
+		//- Supprimer une formation du panier
+	
+	//Passer commande --> "Autre écran"
+		//- Récap avec le contenu du panier + montant total
+		//- Quand valid� => message de confirmation + panier vidé + appli qui revient sur le menu principal
+	
+	//Ajouter des formations prochainement disponibles
+	
+	//Fonctionnalité de mon choix
