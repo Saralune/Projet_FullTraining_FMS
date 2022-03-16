@@ -3,6 +3,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
+//demander à mohamed :
+/* problèmes avec le scanner
+ * merge des branches quand on a fini une fonctionnalité ?
+ * 
+ * */
+
 /**
  * Application permettant d'acheter des formations en ligne
  * */
@@ -44,7 +50,7 @@ public class Main {
 					answer = scanner.nextInt();
 					
 					while(scanner.hasNextInt()) {
-						System.out.println("answer : " + answer);
+						//System.out.println("answer : " + answer);
 						
 						if(answer == 0) {
 							System.out.println("Retour au menu.");
