@@ -12,35 +12,61 @@ public class Main {
 		/*INIT*/
 		Scanner scanner = new Scanner(System.in);
 		
-		HashMap<Integer, ArrayList<String>> basket = new HashMap<Integer, ArrayList<String>>();
+		int answer = 0;
+		
+		//List of trainings
+		ArrayList<String[]> trainingsList = initAllTrainings();
+		
+		//Basket of user
+		HashMap<Integer, ArrayList<String[]>> basket = new HashMap<Integer, ArrayList<String[]>>();
 		/*END INIT*/
 		
 		System.out.println("Bonjour et bienvenue dans mon application FullTraining.");
 		System.out.println("Nous allons vous proposer une liste de formation actuellemnt disponibles : ");
-		initAllTrainings();
+		
 		printTrainings();
-		
-		printMenu();
-		int answer = scanner.nextInt();
-		
-		//A VOIR SI AUTRE R2PONSE ????
-		//while(scanner.hasNextInt()) {
+
+		while(answer != -1) {
+			printMenu();
+			
+			while(!scanner.hasNextInt()) scanner.next();
+			answer = scanner.nextInt();
+			
 			switch(answer) {
 				case 1:
 					printTrainings();
 					break;
 					
 				case 2:
-					printTrainingsToChoose();
-					addTrainingToBasket(basket, answer);
+					System.out.println("Quelle formation souhaitez-vous ajouter ? Saisir le chiffre correspondant.");
+					printTrainingsToChoose();	
+					
+					answer = scanner.nextInt();
+					
+					while(scanner.hasNextInt()) {
+						System.out.println("answer : " + answer);
+						
+						if(answer == 0) {
+							System.out.println("Retour au menu.");
+							break;
+						}
+						
+						addTrainingToBasket(basket, answer, trainingsList);
+					
+						answer = scanner.nextInt();
+					}
+					System.out.println(basket.entrySet());
 					break;
 					
 				case 3:
-					printBasket();
+					printBasket(basket);
 					break;
 					
 			}
-		//}
+			
+			printMenu();
+			answer = scanner.nextInt();
+		}
 		
 		
 		scanner.close();
@@ -142,17 +168,39 @@ public class Main {
 
 	}
 	
-	public static void addTrainingToBasket(HashMap<Integer, ArrayList<String>> basket, int id) {
-		//ajouter à la hashmap avec integer = id
-		//pour savoir si plusieurs ajout : taille de la arraylist
+	public static void addTrainingToBasket(HashMap<Integer, ArrayList<String[]>> basket, int answer, ArrayList<String[]> trainingList) {
 		
-		System.out.println("Vous avez ajouté la leçon : " + "truc");
+		if(answer <= trainingList.size()) {
+			//If there are no values in basket with key "answer"
+			if(basket.get(answer) == null) {
+				//it creates an arraylist that i can fill
+				basket.computeIfAbsent(answer, k -> new ArrayList<>()).add(trainingList.get(answer - 1));
+				System.out.println("cébon");
+				
+			} else {
+				System.out.println("déjà rempli");
+				basket.get(answer).add(trainingList.get(answer - 1));
+			}
+			
+			System.out.println("Vous avez ajouté " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");
+			
+			System.out.println(basket.entrySet());
+			System.out.println(basket.get(answer).get(0)[1]);
+			System.out.println();
+			
+			System.out.println("Si vous souhaitez ajouter une autre formation, tapez le chiffre correspondant, sinon tapez 0 pour un retour au menu.");
+			System.out.println("answer : " + answer);
+		} else {
+			System.out.println("Merci de saisir un nombre proposé.");
+		}
+		
 	}
 	
-	public static void printBasket() {
-		
-		//sous forme de tableau
-		//ligne : cours - durée [1] jours - qté - prix unitaire - prix total
+	
+	/**Print basket of user, with courses selected (duration, quantity, price and total price)
+	 * 
+	 * */
+	public static void printBasket(HashMap<Integer, ArrayList<String[]>> basket) {
 	}
 	
 	/** Add a course to my list of training
