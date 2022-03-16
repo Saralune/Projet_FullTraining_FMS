@@ -207,7 +207,40 @@ public class Main {
 	 * 
 	 * */
 	public static void printBasket(HashMap<Integer, ArrayList<String[]>> basket) {
+		System.out.println("Voici votre panier : ");
+		
+		String format  = "%1$-25s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
+		
+		System.out.println(String.join("", Collections.nCopies(75, "-")));
+		System.out.format(format,"Cours", "Durée", "Quantité", "Prix", "Prix total");
+		System.out.format(format, "-------------------------",  "----------", "--------", "------", "------------");
+		
+		int totalTrainings = 0;
+		
+		for (int i = 0; i < basket.size() + 1; i++) {	
+			if(basket.get(i) != null) {
+				int total = (basket.get(i).size()) * Integer.parseInt((basket.get(i).get(0)[4])); // Total price
+				
+				System.out.format(format, 
+					basket.get(i).get(0)[1] + " - " + basket.get(i).get(0)[3], //Name of course
+					basket.get(i).get(0)[2] + " jours", //Duration
+					basket.get(i).size(), //Quantity
+					basket.get(i).get(0)[4], //Price U
+					total
+				);
+				
+				totalTrainings += total;
+			}
+			
+		}
+		
+		System.out.println(String.join("", Collections.nCopies(75, "-")));
+		
+		System.out.println("Total à régler : " + totalTrainings);
+		
+		System.out.println();
 	}
+	
 	
 	/** Add a course to my list of training
 	 * 
