@@ -47,11 +47,11 @@ public class Main {
 					System.out.println("Quelle formation souhaitez-vous ajouter ? Saisir le chiffre correspondant.");
 					printTrainingsToChoose();	
 					
+					while(!scanner.hasNextInt()) scanner.next();
 					answer = scanner.nextInt();
 					
 					while(scanner.hasNextInt()) {
-						//System.out.println("answer : " + answer);
-						
+
 						if(answer == 0) {
 							System.out.println("Retour au menu.");
 							break;
@@ -68,10 +68,21 @@ public class Main {
 					printBasket(basket);
 					break;
 					
+				case 4:
+					System.out.println("Merci d'avoir parcouru notre application. Bonne journée !");
+					answer = -1;
+					break;
+					
 			}
 			
-			printMenu();
-			answer = scanner.nextInt();
+			if(answer != -1) {
+				printMenu();
+				while(!scanner.hasNextInt()) scanner.next();
+				answer = scanner.nextInt();
+			} else {
+				break;
+			}
+
 		}
 		
 		
@@ -165,12 +176,7 @@ public class Main {
 		System.out.println("1. Afficher la liste des formations.");
 		System.out.println("2. Ajouter une formation à mon panier.");
 		System.out.println("3. Afficher le contenu de mon panier.");
-		
-		//System.out.println("2. ");
-		//System.out.println("2. ");
-		//System.out.println("2. ");
-		
-		System.out.println("X. Quitter l'application.");
+		System.out.println("4. Quitter l'application.");
 
 	}
 	
@@ -207,38 +213,43 @@ public class Main {
 	 * 
 	 * */
 	public static void printBasket(HashMap<Integer, ArrayList<String[]>> basket) {
-		System.out.println("Voici votre panier : ");
-		
-		String format  = "%1$-25s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
-		
-		System.out.println(String.join("", Collections.nCopies(75, "-")));
-		System.out.format(format,"Cours", "Durée", "Quantité", "Prix", "Prix total");
-		System.out.format(format, "-------------------------",  "----------", "--------", "------", "------------");
-		
-		int totalTrainings = 0;
-		
-		for (int i = 0; i < basket.size() + 1; i++) {	
-			if(basket.get(i) != null) {
-				int total = (basket.get(i).size()) * Integer.parseInt((basket.get(i).get(0)[4])); // Total price
+		if(basket.size() > 0) {
+			System.out.println("Voici votre panier : ");
+			
+			String format  = "%1$-25s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
+			
+			System.out.println(String.join("", Collections.nCopies(75, "-")));
+			System.out.format(format,"Cours", "Durée", "Quantité", "Prix", "Prix total");
+			System.out.format(format, "-------------------------",  "----------", "--------", "------", "------------");
+			
+			int totalTrainings = 0;
+			
+			for (int i = 0; i < basket.size() + 1; i++) {	
+				if(basket.get(i) != null) {
+					int total = (basket.get(i).size()) * Integer.parseInt((basket.get(i).get(0)[4])); // Total price
+					
+					System.out.format(format, 
+						basket.get(i).get(0)[1] + " - " + basket.get(i).get(0)[3], //Name of course
+						basket.get(i).get(0)[2] + " jours", //Duration
+						basket.get(i).size(), //Quantity
+						basket.get(i).get(0)[4], //Price U
+						total
+					);
+					
+					totalTrainings += total;
+				}
 				
-				System.out.format(format, 
-					basket.get(i).get(0)[1] + " - " + basket.get(i).get(0)[3], //Name of course
-					basket.get(i).get(0)[2] + " jours", //Duration
-					basket.get(i).size(), //Quantity
-					basket.get(i).get(0)[4], //Price U
-					total
-				);
-				
-				totalTrainings += total;
 			}
 			
+			System.out.println(String.join("", Collections.nCopies(75, "-")));
+			
+			System.out.println("Total à régler : " + totalTrainings);
+			
+			System.out.println();
+		} else {
+			System.out.println("Votre panier est vide.\n");
 		}
-		
-		System.out.println(String.join("", Collections.nCopies(75, "-")));
-		
-		System.out.println("Total à régler : " + totalTrainings);
-		
-		System.out.println();
+
 	}
 	
 	
