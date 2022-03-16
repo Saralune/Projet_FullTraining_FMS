@@ -241,6 +241,9 @@ public class Main {
 		System.out.println();
 	}
 	
+	public static void deleteTrainingFromBasket() {
+		
+	}
 	
 	/** Add a course to my list of training
 	 * 
