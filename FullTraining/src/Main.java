@@ -78,6 +78,18 @@ public class Main {
 					break;
 					
 				case 5:
+					payCart(basket, trainingsList);
+					break;
+					
+				case 6:
+					//formations prochainement dispo
+					break;
+					
+				case 7:
+					//fonctionnalité mystère
+					break;
+					
+				case 0:
 					System.out.println("Merci d'avoir parcouru notre application. Bonne journée !");
 					answer = -1;
 					break;
@@ -177,7 +189,10 @@ public class Main {
 		System.out.println("2. Ajouter une formation à mon panier.");
 		System.out.println("3. Afficher le contenu de mon panier.");
 		System.out.println("4. Supprimer une formation de mon panier.");
-		System.out.println("5. Quitter l'application.");
+		System.out.println("5. Régler ma commande.");
+		System.out.println("6. Voir les formations porchainement disponibles.");
+		System.out.println("7. Fonctionnalité mystère.");
+		System.out.println("0. Quitter l'application.");
 
 	}
 	
@@ -247,17 +262,108 @@ public class Main {
 
 	}
 	
+	/**Delete a training from user's cart.
+	 * Method uses ArrayList of training list to print infos, connecting ids with HashMap Integer (key) and ArrayList.get(...)[0] (id)
+	 * @param HashMap<Integer, Integer>, int, ArrayList<String[]>
+	 * @author Sarah Lefort
+	 * */
 	public static void deleteTrainingFromBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
-	
 		if(answer <= trainingList.size()) {
-			if(basket.get(answer) != null && basket.get(answer) > 0) {
-				basket.put(answer, basket.get(answer) - 1);
-				System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");	
+			if(basket.get(answer) != null) {
+				
+				if(basket.get(answer) > 0) {
+					basket.put(answer, basket.get(answer) - 1);
+					
+					if (basket.get(answer) == 0) {
+						basket.remove(answer);
+					}
+					
+					System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");					
+				}
+				
 			} else {
-				System.out.println("Vous n'avez pas cette référence dans votre panier.");			}
+				System.out.println("Vous n'avez pas cette référence dans votre panier.");			
+			}
+		
 		} else {
 			System.out.println("Merci de saisir un nombre proposé.");
 		}		
+	}
+	
+	/**
+	 * @param HashMap<Integer, Integer>
+	 * @author Sarah Lefort
+	 * */
+	public static void payCart(HashMap<Integer, Integer> basket, ArrayList<String[]> trainingList) {
+		if(basket.size() > 0) {
+			System.out.println(String.join("", Collections.nCopies(101, "*")));
+			System.out.println("*" + String.join("", Collections.nCopies(99, " ")) + "*");
+			System.out.println("*" + String.join("", Collections.nCopies(99, " ")) + "*");
+			System.out.println("*" + String.join("", Collections.nCopies(39, " ")) + "VALIDATION DU PANIER" + String.join("", Collections.nCopies(40, " ")) + "*");
+			System.out.println("*" + String.join("", Collections.nCopies(39, " ")) + "--------------------" + String.join("", Collections.nCopies(40, " ")) + "*");
+			System.out.println("*" + String.join("", Collections.nCopies(99, " ")) + "*");
+			System.out.println("*" + String.join("", Collections.nCopies(99, " ")) + "*");
+			System.out.println(String.join("", Collections.nCopies(101, "*")));
+			
+			printBasket(basket, trainingList);
+			
+			System.out.println("Voulez-vous vraiment valider votre panier ? 1: oui, 2: non");
+			
+			while(!scanner.hasNextInt()) scanner.next();
+			
+			int choice = scanner.nextInt();
+			
+			////////voir le do while avec la condifiton if choice == 1
+			
+			switch(choice) {
+				case 1:
+					System.out.println("ok");
+					System.out.println("Etes vous sûr(e) de vouloir valider votre panier ? 1: oui, 2: non");
+					while(!scanner.hasNextInt()) scanner.next();
+					
+					choice = scanner.nextInt();
+					
+					if(choice == 1) {
+						System.out.println("ok");
+						System.out.println("Merci de saisir votre numéro de carte bleue pour valider votre panier.");
+						
+						while(!scanner.hasNextInt()) scanner.next();
+						
+						if(scanner.hasNextInt()) {
+							choice = scanner.nextInt();
+							
+							///////////////////////ATTENTION CONCURRENTMODIFCATION EXCEPTION
+							for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
+								basket.remove(cartEntry.getKey());
+							}
+							
+							System.out.println("Opération validée !");
+						}
+						
+					} else if (choice == 2) {
+						System.out.println("Retour au menu.");
+						break;
+					} else {
+						System.out.println("");
+					}
+					//demander le code de carte bleue
+					//validation
+					//supprimer le contenu du panier
+					break;
+					
+				case 2:
+					System.out.println("Retour au menu.");
+					break;
+					
+				default:
+					System.out.println("Merci de choisir 1 pour oui ou 2 pour non.");
+						
+			}
+			
+			
+		} else {
+			System.out.println("Votre panier est vide.");
+		}
 	}
 	
 	/** Add a course to my list of training
