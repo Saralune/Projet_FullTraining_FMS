@@ -13,10 +13,10 @@ import java.util.Scanner;
  * Application permettant d'acheter des formations en ligne
  * */
 public class Main {
+	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		/*INIT*/
-		Scanner scanner = new Scanner(System.in);
 		
 		int answer = 0;
 		
@@ -50,12 +50,12 @@ public class Main {
 					while(!scanner.hasNextInt()) scanner.next();
 					answer = scanner.nextInt();
 					
-					while(scanner.hasNextInt()) {
+					while(answer != 0) {
 
-						if(answer == 0) {
-							System.out.println("Retour au menu.");
-							break;
-						}
+//						if(answer == 0) {
+//							System.out.println("Retour au menu.");
+//							break;
+//						}
 						
 						addTrainingToBasket(basket, answer, trainingsList);
 					
@@ -75,13 +75,13 @@ public class Main {
 					
 			}
 			
-			if(answer != -1) {
-				printMenu();
-				while(!scanner.hasNextInt()) scanner.next();
-				answer = scanner.nextInt();
-			} else {
-				break;
-			}
+//			if(answer != -1) {
+//				printMenu();
+//				while(!scanner.hasNextInt()) scanner.next();
+//				answer = scanner.nextInt();
+//			} else {
+//				break;
+//			}
 
 		}
 		
