@@ -64,7 +64,12 @@ public class Main {
 					break;
 					
 				case 4:
+					System.out.println("Voici votre panier : ");
+					printBasket(basket, trainingsList);
 					
+					System.out.println("Que souhaitez-vous supprimer ? Saisir la référence.");
+					answer = scanner.nextInt();
+					deleteTrainingFromBasket(basket, answer, trainingsList);
 					break;
 					
 				case 5:
@@ -198,11 +203,11 @@ public class Main {
 		if(basket.size() > 0) {
 			System.out.println("Voici votre panier : ");
 			
-			String format  = "%1$-45s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
+			String format  = "%1$-3s | %2$-45s | %3$-10s | %4$-8s | %5$-6s | %6$-12s |\n";
 			
-			System.out.println(String.join("", Collections.nCopies(95, "-")));
-			System.out.format(format,"Cours", "Durée", "Quantité", "Prix", "Prix total");
-			System.out.format(format, String.join("", Collections.nCopies(45, "-")),  "----------", "--------", "------", "------------");
+			System.out.println(String.join("", Collections.nCopies(101, "-")));
+			System.out.format(format, "Ref", "Cours", "Durée", "Quantité", "Prix", "Prix total");
+			System.out.format(format, "---", String.join("", Collections.nCopies(45, "-")),  "----------", "--------", "------", "------------");
 			
 			int totalTrainings = 0;
 			
@@ -211,19 +216,22 @@ public class Main {
 						
 				//key : cartEntry.getKey()
 				//value : cartEntry.getValue());
-		           
-		           System.out.format(format,
+		           if(cartEntry.getValue() > 0) {
+		        	   	System.out.format(format,
+		        		   trainingList.get(cartEntry.getKey() - 1)[0],
 		        		   trainingList.get(cartEntry.getKey() - 1)[1] + " - " + trainingList.get(cartEntry.getKey() - 1)[3], //Name of course
 		        		   trainingList.get(cartEntry.getKey() - 1)[2], //Duration
 		        		   cartEntry.getValue(), //quantity
 		        		   trainingList.get(cartEntry.getKey() - 1)[4], //Price U
 		        		   total
-		        		   );
+		        		);
+		           }
+
 		           
 		           totalTrainings += total;
 		        }
 			
-			System.out.println(String.join("", Collections.nCopies(95, "-")));
+			System.out.println(String.join("", Collections.nCopies(101, "-")));
 			
 			System.out.println("Total à régler : " + totalTrainings);
 			
@@ -234,8 +242,17 @@ public class Main {
 
 	}
 	
-	public static void deleteTrainingFromBasket() {
-		
+	public static void deleteTrainingFromBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
+	
+		if(answer <= trainingList.size()) {
+			if(basket.get(answer) != null && basket.get(answer) > 0) {
+				basket.put(answer, basket.get(answer) - 1);
+				System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");	
+			} else {
+				System.out.println("Vous n'avez pas cette référence dans votre panier.");			}
+		} else {
+			System.out.println("Merci de saisir un nombre proposé.");
+		}		
 	}
 	
 	/** Add a course to my list of training
