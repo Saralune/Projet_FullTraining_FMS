@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 //demander à mohamed :
@@ -17,14 +18,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		/*INIT*/
-		
 		int answer = 0;
 		
 		//List of trainings
 		ArrayList<String[]> trainingsList = initAllTrainings();
 		
 		//Basket of user
-		HashMap<Integer, ArrayList<String[]>> basket = new HashMap<Integer, ArrayList<String[]>>();
+		HashMap<Integer, Integer> basket = new HashMap<Integer, Integer>();
 		/*END INIT*/
 		
 		System.out.println("Bonjour et bienvenue dans mon application FullTraining.");
@@ -51,40 +51,30 @@ public class Main {
 					answer = scanner.nextInt();
 					
 					while(answer != 0) {
-
-//						if(answer == 0) {
-//							System.out.println("Retour au menu.");
-//							break;
-//						}
-						
 						addTrainingToBasket(basket, answer, trainingsList);
-					
+						
+						while(!scanner.hasNextInt()) scanner.next();
 						answer = scanner.nextInt();
 					}
 					System.out.println(basket.entrySet());
 					break;
 					
 				case 3:
-					printBasket(basket);
+					printBasket(basket, trainingsList);
 					break;
 					
 				case 4:
+					
+					break;
+					
+				case 5:
 					System.out.println("Merci d'avoir parcouru notre application. Bonne journée !");
 					answer = -1;
 					break;
 					
 			}
-			
-//			if(answer != -1) {
-//				printMenu();
-//				while(!scanner.hasNextInt()) scanner.next();
-//				answer = scanner.nextInt();
-//			} else {
-//				break;
-//			}
 
 		}
-		
 		
 		scanner.close();
 		
@@ -103,7 +93,7 @@ public class Main {
 		String[] training2 = {"2", "Java", "20", "Java avancé : POO", "3000"};
 		String[] training3 = {"3", "Git", "2", "Les bases", "500"};
 		String[] training4 = {"4", "Git", "20", "Les branches et autres concepts avancés", "2599"};
-		String[] training5 = {"5", "Angular", "200", "Les bases & autres cadeaux", "10 000"};
+		String[] training5 = {"5", "Angular", "200", "Les bases & autres cadeaux", "10000"};
 		
 		trainingList.add(training1);
 		trainingList.add(training2);
@@ -176,72 +166,65 @@ public class Main {
 		System.out.println("1. Afficher la liste des formations.");
 		System.out.println("2. Ajouter une formation à mon panier.");
 		System.out.println("3. Afficher le contenu de mon panier.");
-		System.out.println("4. Quitter l'application.");
+		System.out.println("4. Supprimer une formation de mon panier.");
+		System.out.println("5. Quitter l'application.");
 
 	}
 	
-	public static void addTrainingToBasket(HashMap<Integer, ArrayList<String[]>> basket, int answer, ArrayList<String[]> trainingList) {
-		
+	public static void addTrainingToBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
+
 		if(answer <= trainingList.size()) {
-			//If there are no values in basket with key "answer"
 			if(basket.get(answer) == null) {
-				//it creates an arraylist that i can fill
-				basket.computeIfAbsent(answer, k -> new ArrayList<>()).add(trainingList.get(answer - 1));
-				System.out.println("cébon");
-				
+				Integer count = 0;
+				basket.put(answer, ++count);
 			} else {
-				System.out.println("déjà rempli");
-				basket.get(answer).add(trainingList.get(answer - 1));
+				basket.put(answer, basket.get(answer) + 1);
 			}
-			
-			System.out.println("Vous avez ajouté " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");
-			
-			System.out.println(basket.entrySet());
-			System.out.println(basket.get(answer).get(0)[1]);
-			System.out.println();
-			
+				
+			System.out.println("Vous avez ajouté " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");	
+			System.out.println(basket.entrySet());	
+				
 			System.out.println("Si vous souhaitez ajouter une autre formation, tapez le chiffre correspondant, sinon tapez 0 pour un retour au menu.");
 			System.out.println("answer : " + answer);
 		} else {
 			System.out.println("Merci de saisir un nombre proposé.");
-		}
-		
+		}	
 	}
 	
 	
 	/**Print basket of user, with courses selected (duration, quantity, price and total price)
 	 * 
 	 * */
-	public static void printBasket(HashMap<Integer, ArrayList<String[]>> basket) {
+	public static void printBasket(HashMap<Integer, Integer> basket, ArrayList<String[]> trainingList) {
 		if(basket.size() > 0) {
 			System.out.println("Voici votre panier : ");
 			
-			String format  = "%1$-25s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
+			String format  = "%1$-45s | %2$-10s | %3$-8s | %4$-6s | %5$-12s |\n";
 			
-			System.out.println(String.join("", Collections.nCopies(75, "-")));
+			System.out.println(String.join("", Collections.nCopies(95, "-")));
 			System.out.format(format,"Cours", "Durée", "Quantité", "Prix", "Prix total");
-			System.out.format(format, "-------------------------",  "----------", "--------", "------", "------------");
+			System.out.format(format, String.join("", Collections.nCopies(45, "-")),  "----------", "--------", "------", "------------");
 			
 			int totalTrainings = 0;
 			
-			for (int i = 0; i < basket.size() + 1; i++) {	
-				if(basket.get(i) != null) {
-					int total = (basket.get(i).size()) * Integer.parseInt((basket.get(i).get(0)[4])); // Total price
-					
-					System.out.format(format, 
-						basket.get(i).get(0)[1] + " - " + basket.get(i).get(0)[3], //Name of course
-						basket.get(i).get(0)[2] + " jours", //Duration
-						basket.get(i).size(), //Quantity
-						basket.get(i).get(0)[4], //Price U
-						total
-					);
-					
-					totalTrainings += total;
-				}
-				
-			}
+			for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
+				int total = Integer.parseInt(trainingList.get(cartEntry.getKey() - 1)[4]) * cartEntry.getValue(); //total price
+						
+				//key : cartEntry.getKey()
+				//value : cartEntry.getValue());
+		           
+		           System.out.format(format,
+		        		   trainingList.get(cartEntry.getKey() - 1)[1] + " - " + trainingList.get(cartEntry.getKey() - 1)[3], //Name of course
+		        		   trainingList.get(cartEntry.getKey() - 1)[2], //Duration
+		        		   cartEntry.getValue(), //quantity
+		        		   trainingList.get(cartEntry.getKey() - 1)[4], //Price U
+		        		   total
+		        		   );
+		           
+		           totalTrainings += total;
+		        }
 			
-			System.out.println(String.join("", Collections.nCopies(75, "-")));
+			System.out.println(String.join("", Collections.nCopies(95, "-")));
 			
 			System.out.println("Total à régler : " + totalTrainings);
 			
