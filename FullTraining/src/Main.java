@@ -64,12 +64,17 @@ public class Main {
 					break;
 					
 				case 4:
-					System.out.println("Voici votre panier : ");
 					printBasket(basket, trainingsList);
 					
-					System.out.println("Que souhaitez-vous supprimer ? Saisir la référence.");
-					answer = scanner.nextInt();
-					deleteTrainingFromBasket(basket, answer, trainingsList);
+					if(basket.size() > 0) {
+						System.out.println("Que souhaitez-vous supprimer ? Saisir la référence.");
+					
+						while(!scanner.hasNextInt()) scanner.next();
+						answer = scanner.nextInt();
+						
+						deleteTrainingFromBasket(basket, answer, trainingsList);
+					}
+					
 					break;
 					
 				case 5:
