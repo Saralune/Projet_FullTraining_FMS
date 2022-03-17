@@ -185,7 +185,6 @@ public class Main {
 			System.out.println(basket.entrySet());	
 				
 			System.out.println("Si vous souhaitez ajouter une autre formation, tapez le chiffre correspondant, sinon tapez 0 pour un retour au menu.");
-			System.out.println("answer : " + answer);
 		} else {
 			System.out.println("Merci de saisir un nombre proposé.");
 		}	
