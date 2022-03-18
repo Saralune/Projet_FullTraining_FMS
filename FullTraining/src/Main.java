@@ -28,10 +28,9 @@ public class Main {
 		printTrainings();
 
 		//loop which wait for user's answer
-		while(answer != -1) {
+		while(answer != -10) {
 			printMenu();
 			
-			//if user doesn't write number
 			while(!scanner.hasNextInt()) scanner.next();
 			
 			answer = scanner.nextInt();
@@ -42,7 +41,7 @@ public class Main {
 					break;
 					
 				case 2: //add training(s) to cart
-					System.out.println("Quelle formation souhaitez-vous ajouter ? Saisir le chiffre correspondant.");
+					System.out.println("Quelle formation souhaitez-vous ajouter ? Saisir le chiffre correspondant.  Tapez 0 pour un retour au menu.");
 					printTrainingsToChoose();	
 					
 					while(!scanner.hasNextInt()) scanner.next();
@@ -54,7 +53,7 @@ public class Main {
 						while(!scanner.hasNextInt()) scanner.next();
 						answer = scanner.nextInt();
 					}
-					System.out.println(basket.entrySet());
+					
 					break;
 					
 				case 3: //print cart
@@ -89,7 +88,7 @@ public class Main {
 					
 				case 0: //Close the app
 					System.out.println("Merci d'avoir parcouru notre application. Bonne journée !");
-					answer = -1;
+					answer = -10;
 					break;
 					
 			}
@@ -123,7 +122,7 @@ public class Main {
 		return trainingList;
 	}
 	
-	/**Function that initializes all training available (name, duration, description, price)
+	/**Function that initializes all training available in the future (name, duration, description, price)
 	 * 
 	 * @return void
 	 * @author Sarah Lefort
@@ -171,6 +170,32 @@ public class Main {
 		
 	}
 	
+	/**print trainings which are not available yet. 
+	 * @return void
+	 * @author Sarah Lefort
+	 * */
+	public static void printFutureTrainings(ArrayList<String[]> futureTrainingList) {
+		String format  = "%1$-8s | %2$-8s | %3$-40s | %4$-6s |\n";
+		
+		System.out.println("\nVoici les formations prochainement disponibles :");
+		
+		System.out.println(String.join("", Collections.nCopies(73, "-")));
+		System.out.format(format, "COURS", "NB/JOURS", "DESCRIPTION", "PRIX");
+		System.out.format(format, "--------", "--------", String.join("", Collections.nCopies(40, "-")), "------");
+		
+		for (int i = 0; i < futureTrainingList.size(); i++) {
+			System.out.format(format, 
+					futureTrainingList.get(i)[1], 
+					futureTrainingList.get(i)[2], 
+					futureTrainingList.get(i)[3], 
+					futureTrainingList.get(i)[4]);
+		}
+		
+		System.out.println(String.join("", Collections.nCopies(73, "-")));
+		System.out.println();
+		
+	}
+	
 	/**Function that print all training when user want to add one to his cart.
 	 * 
 	 * @return void
@@ -200,7 +225,7 @@ public class Main {
 	 * @author Sarah Lefort
 	 * */
 	public static void printMenu() {
-		System.out.println("Que souhaitez-vous faire ?");
+		System.out.println("Que souhaitez-vous faire ? \n");
 		System.out.println("1. Afficher la liste des formations.");
 		System.out.println("2. Ajouter une formation à mon panier.");
 		System.out.println("3. Afficher le contenu de mon panier.");
@@ -209,7 +234,6 @@ public class Main {
 		System.out.println("6. Voir les formations porchainement disponibles.");
 		System.out.println("7. Fonctionnalité mystère.");
 		System.out.println("0. Quitter l'application.");
-
 	}
 	
 	/**Function that add training the user choose, to his cart.
@@ -219,20 +243,23 @@ public class Main {
 	 * */
 	public static void addTrainingToBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
 
-		if(answer <= trainingList.size()) {
-			if(basket.get(answer) == null) {
+		//if answer is in training list
+		if(answer <= trainingList.size() && answer >= 0) {
+			
+			
+			if(basket.get(answer) == null) { //if training isn't in cart
 				Integer count = 0;
 				basket.put(answer, ++count);
-			} else {
+				
+			} else { //if training is in cart, value (quantity) is modified
 				basket.put(answer, basket.get(answer) + 1);
 			}
 				
-			System.out.println("Vous avez ajouté " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");	
-			System.out.println(basket.entrySet());	
+			System.out.println("Vous avez ajouté " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".\n");	
 				
 			System.out.println("Si vous souhaitez ajouter une autre formation, tapez le chiffre correspondant, sinon tapez 0 pour un retour au menu.");
 		} else {
-			System.out.println("Merci de saisir un nombre proposé.");
+			System.out.println("Merci de saisir un nombre proposé. Tapez 0 pour un retour au menu.");
 		}	
 	}
 	
@@ -258,11 +285,13 @@ public class Main {
 			
 			int totalTrainings = 0;
 			
+			//loop over all entries of cart
 			for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
-				int total = Integer.parseInt(trainingList.get(cartEntry.getKey() - 1)[4]) * cartEntry.getValue(); //total price
-						
+				
+				int total = Integer.parseInt(trainingList.get(cartEntry.getKey() - 1)[4]) * cartEntry.getValue(); //total price (price * quantity)
 				//key : cartEntry.getKey()
 				//value : cartEntry.getValue());
+				
 		           if(cartEntry.getValue() > 0) {
 		        	   	System.out.format(format,
 		        		   trainingList.get(cartEntry.getKey() - 1)[0],
@@ -274,15 +303,13 @@ public class Main {
 		        		);
 		           }
 
-		           
 		           totalTrainings += total;
 		        }
 			
 			System.out.println(String.join("", Collections.nCopies(101, "-")));
 			
-			System.out.println("Total à régler : " + totalTrainings);
+			System.out.println("Total à régler : " + totalTrainings + "\n");
 			
-			System.out.println();
 		} else {
 			System.out.println("Votre panier est vide.\n");
 		}
@@ -300,25 +327,21 @@ public class Main {
 	 * @author Sarah Lefort
 	 * */
 	public static void deleteTrainingFromBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
-		if(answer <= trainingList.size()) {
-			if(basket.get(answer) != null) {
-				
-				if(basket.get(answer) > 0) {
-					basket.put(answer, basket.get(answer) - 1);
-					
-					if (basket.get(answer) == 0) {
-						basket.remove(answer);
-					}
-					
-					System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".\n");					
-				}
-				
-			} else {
-				System.out.println("Vous n'avez pas cette référence dans votre panier.");			
-			}
 		
+		//if answer is in training list
+		if(answer <= trainingList.size() && basket.get(answer) != null && basket.get(answer) > 0) {
+
+			basket.put(answer, basket.get(answer) - 1);
+			
+			//if quantity == 0, line is removed
+			if (basket.get(answer) == 0) {
+				basket.remove(answer);
+			}
+			
+			System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".\n");					
+
 		} else {
-			System.out.println("Merci de saisir un nombre proposé.");
+			System.out.println("Vous n'avez pas cette référence dans votre panier.\\n");
 		}		
 	}
 	
@@ -328,6 +351,7 @@ public class Main {
 	 * @author Sarah Lefort
 	 * */
 	public static void payCart(HashMap<Integer, Integer> basket, ArrayList<String[]> trainingList) {
+		
 		if(basket.size() > 0) {
 			System.out.println(String.join("", Collections.nCopies(101, "*")));
 			System.out.println("*" + String.join("", Collections.nCopies(99, " ")) + "*");
@@ -345,7 +369,8 @@ public class Main {
 			while(!scanner.hasNextInt()) scanner.next();
 			
 			int choice = scanner.nextInt();
-						
+			
+			//choice 2 : back to menu
 			while(choice != 2) {
 				
 				if(choice == 1) {
@@ -353,29 +378,32 @@ public class Main {
 					
 					while(!scanner.hasNextInt()) scanner.next();
 					
-					while(choice >= 0) {
-						
+					while(choice != 0) {
+				
 						choice = scanner.nextInt();
-						System.out.println();
 						
+						//credit card number must be > 6 digits
 						if(choice > 99999) {
+							
 							//clear user's cart
 							basket.clear();
 							
 							System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
-							choice = 2;
+							
+							choice = 2; //back to menu
 							break;
 							
-						} else if(choice == 0) {
+						} else if(choice == 0) { //back to menu
 							break;
 							
 						} else {
 							System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres. Pour annuler, taper 0.");
+							while(!scanner.hasNextInt()) scanner.next();
+							continue;
 						}
 					}
 						
-						
-				} else if(choice == 0) {
+				} else if(choice == 0) { //back to menu
 					break;
 					
 				} else {
@@ -385,43 +413,9 @@ public class Main {
 						
 			}
 			
-			
 		} else {
 			System.out.println("Votre panier est vide.");
 		}
-	}
-	
-	/**print trainings which are not available yet. 
-	 * @return void
-	 * @author Sarah Lefort
-	 * */
-	public static void printFutureTrainings(ArrayList<String[]> futureTrainingList) {
-		String format  = "%1$-8s | %2$-8s | %3$-40s | %4$-6s |\n";
-		
-		System.out.println("\nVoici les formations prochainement disponibles :");
-		
-		System.out.println(String.join("", Collections.nCopies(73, "-")));
-		System.out.format(format, "COURS", "NB/JOURS", "DESCRIPTION", "PRIX");
-		System.out.format(format, "--------", "--------", String.join("", Collections.nCopies(40, "-")), "------");
-		
-		for (int i = 0; i < futureTrainingList.size(); i++) {
-			System.out.format(format, 
-					futureTrainingList.get(i)[1], 
-					futureTrainingList.get(i)[2], 
-					futureTrainingList.get(i)[3], 
-					futureTrainingList.get(i)[4]);
-		}
-		
-		System.out.println(String.join("", Collections.nCopies(73, "-")));
-		System.out.println();
-		
-	}
-	
-	/** Add a course to my list of training
-	 * 
-	 * */
-	public static void addTraining(String[] training) {
-		
 	}
 
 }
