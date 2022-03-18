@@ -104,7 +104,7 @@ public class Main {
 	 * @return void
 	 * @author Sarah Lefort
 	 * */
-	public static ArrayList<String[]> initAllTrainings() {
+	private static ArrayList<String[]> initAllTrainings() {
 		ArrayList<String[]> trainingList = new ArrayList<>();
 				
 		String[] training1 = {"1", "Java", "10", "Les bases", "1000"};
@@ -127,7 +127,7 @@ public class Main {
 	 * @return void
 	 * @author Sarah Lefort
 	 * */
-	public static ArrayList<String[]> initFutureTrainings() {
+	private static ArrayList<String[]> initFutureTrainings() {
 		ArrayList<String[]> futureTrainingList = new ArrayList<>();
 				
 		String[] training1 = {"1", "UML", "5", "Diagrammes & Co", "1000"};
@@ -237,7 +237,7 @@ public class Main {
 	}
 	
 	/**Function that add training the user choose, to his cart.
-	 * @param HashMap<Integer, Integer> (cart) , int (answer choose in scanner), ArrayList<String[]> (list of trainings available)
+	 * @param HashMap<Integer, Integer> (cart), int (answer choose in scanner), ArrayList<String[]> (list of trainings available)
 	 * @return void
 	 * @author Sarah Lefort
 	 * */
@@ -266,7 +266,7 @@ public class Main {
 	
 	/**Print cart of user, with courses selected (duration, quantity, price and total price)
 	 * 
-	 * @param 	HashMap<Integer, Integer> (cart) , 
+	 * @param 	HashMap<Integer, Integer> (cart), 
 	 * 			int (answer choose in scanner), 
 	 * 			ArrayList<String[]> (list of trainings available)
 	 * 
@@ -346,7 +346,7 @@ public class Main {
 	}
 	
 	/**When user wants to pay his cart 
-	 * @param 	HashMap<Integer, Integer> (cart)
+	 * @param 	HashMap<Integer, Integer> (cart), 
 	 * 			ArrayList<String[]> (list of trainings)
 	 * @author Sarah Lefort
 	 * */
@@ -418,4 +418,6 @@ public class Main {
 		}
 	}
 
+	
+	
 }
