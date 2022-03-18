@@ -346,55 +346,43 @@ public class Main {
 			
 			int choice = scanner.nextInt();
 						
-			switch(choice) {
-				case 1:
-					System.out.println("ok");
-					System.out.println("Etes vous sûr(e) de vouloir valider votre panier ? 1: oui, 2: non");
+			while(choice != 2) {
+				if(choice == 1) {
+					System.out.println("Merci de saisir votre numéro de carte bleue pour valider votre panier. Pour annuler, taper 0.");
+					
 					while(!scanner.hasNextInt()) scanner.next();
 					
-					choice = scanner.nextInt();
-					
-					if(choice == 1) {
-						System.out.println("ok");
-						System.out.println("Merci de saisir votre numéro de carte bleue pour valider votre panier.");
+					if(scanner.hasNextInt()) {
+						choice = scanner.nextInt();
 						
-						while(!scanner.hasNextInt()) scanner.next();
-						
-						if(scanner.hasNextInt()) {
-							choice = scanner.nextInt();
-							
-							while(choice > 0) {
-								if(choice > 99999) {
-									for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
-										basket.remove(cartEntry.getKey(), cartEntry.getValue());
-									}
-									
-									System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
-									break;
-									
-								} else {
-									System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres.");
-									choice = scanner.nextInt();
+						while(choice >= 0) {
+							if(choice > 99999) {
+								for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
+									basket.remove(cartEntry.getKey(), cartEntry.getValue());
 								}
+								
+								System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
+								choice = 2;
+								break;
+								
+							} else if(choice == 0) {
+								break;
+								
+							} else {
+								System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres. Pour annuler, taper 0.");
+								choice = scanner.nextInt();
 							}
-							
-							
 						}
 						
-					} else if (choice == 2) {
-						System.out.println("Retour au menu.");
-						break;
-					} else {
-						System.out.println("Merci de saisir 1 ou 2.");
+						
 					}
+				} else if(choice == 0) {
 					break;
 					
-				case 2:
-					System.out.println("Retour au menu.");
-					break;
-					
-				default:
+				} else {
 					System.out.println("Merci de choisir 1 pour oui ou 2 pour non.");
+					choice = scanner.nextInt();
+				}				
 						
 			}
 			
