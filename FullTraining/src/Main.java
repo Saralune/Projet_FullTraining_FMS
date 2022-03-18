@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -352,14 +353,21 @@ public class Main {
 					
 					while(!scanner.hasNextInt()) scanner.next();
 					
-					if(scanner.hasNextInt()) {
+					//if(scanner.hasNextInt()) {
 						choice = scanner.nextInt();
 						
 						while(choice >= 0) {
 							if(choice > 99999) {
-								for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
-									basket.remove(cartEntry.getKey(), cartEntry.getValue());
-								}
+								 for (Iterator<Map.Entry<Integer, Integer>> itCart = basket.entrySet().iterator();itCart.hasNext();) 
+			                        {
+			            
+			                                itCart.remove();
+			                            
+			                        }
+								
+//								for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
+//									basket.remove(cartEntry.getKey(), cartEntry.getValue());
+//								}
 								
 								System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
 								choice = 2;
@@ -376,7 +384,7 @@ public class Main {
 						
 						
 					}
-				} else if(choice == 0) {
+				else if(choice == 0) {
 					break;
 					
 				} else {
