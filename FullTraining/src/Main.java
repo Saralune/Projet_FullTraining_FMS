@@ -83,7 +83,7 @@ public class Main {
 					break;
 					
 				case 7: //what i choose to present
-					System.out.println("Ceci est une fonctionnalité mystère. Bisous.\n");
+					System.out.println("La fonctionnalité mystère est en cours de développement. Merci de revenir plus tard.\n");
 					break;
 					
 				case 0: //Close the app
