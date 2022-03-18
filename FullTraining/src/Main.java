@@ -4,12 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-//demander à mohamed :
-/* problèmes avec le scanner
- * merge des branches quand on a fini une fonctionnalité ?
- * 
- * */
-
 /**
  * Application permettant d'acheter des formations en ligne
  * */
@@ -23,27 +17,30 @@ public class Main {
 		//List of trainings
 		ArrayList<String[]> trainingsList = initAllTrainings();
 		
-		//Basket of user
+		//Cart of user
 		HashMap<Integer, Integer> basket = new HashMap<Integer, Integer>();
 		/*END INIT*/
 		
 		System.out.println("Bonjour et bienvenue dans mon application FullTraining.");
-		System.out.println("Nous allons vous proposer une liste de formation actuellemnt disponibles : ");
+		System.out.println("Nous allons vous proposer une liste de formation actuellement disponibles : ");
 		
 		printTrainings();
 
+		//loop which wait for user's answer
 		while(answer != -1) {
 			printMenu();
 			
+			//if user doesn't write number
 			while(!scanner.hasNextInt()) scanner.next();
+			
 			answer = scanner.nextInt();
 			
 			switch(answer) {
-				case 1:
+				case 1: //print all trainings available
 					printTrainings();
 					break;
 					
-				case 2:
+				case 2: //add training(s) to cart
 					System.out.println("Quelle formation souhaitez-vous ajouter ? Saisir le chiffre correspondant.");
 					printTrainingsToChoose();	
 					
@@ -59,11 +56,11 @@ public class Main {
 					System.out.println(basket.entrySet());
 					break;
 					
-				case 3:
+				case 3: //print cart
 					printBasket(basket, trainingsList);
 					break;
 					
-				case 4:
+				case 4: //delete training from cart
 					printBasket(basket, trainingsList);
 					
 					if(basket.size() > 0) {
@@ -77,19 +74,19 @@ public class Main {
 					
 					break;
 					
-				case 5:
+				case 5: //pay command
 					payCart(basket, trainingsList);
 					break;
 					
-				case 6:
-					//formations prochainement dispo
+				case 6: //training available in future
+					printFutureTrainings();
 					break;
 					
-				case 7:
-					//fonctionnalité mystère
+				case 7: //what i choose to present
+
 					break;
 					
-				case 0:
+				case 0: //Close the app
 					System.out.println("Merci d'avoir parcouru notre application. Bonne journée !");
 					answer = -1;
 					break;
@@ -104,9 +101,8 @@ public class Main {
 	
 	/**Function that initializes all training available (name, duration, description, price)
 	 * 
-	 * @author Stagiaires10P
 	 * @return void
-	 * 
+	 * @author Sarah Lefort
 	 * */
 	public static ArrayList<String[]> initAllTrainings() {
 		ArrayList<String[]> trainingList = new ArrayList<>();
@@ -127,10 +123,9 @@ public class Main {
 	}
 	
 	/**Function that print all training available (name, duration, description, price)
-	 * 
-	 * @author Stagiaires10P
+	 *
 	 * @return void
-	 * 
+	 * @author Sarah Lefort
 	 * */
 	public static void printTrainings() {
 		ArrayList<String[]> trainingList = initAllTrainings();
@@ -154,11 +149,10 @@ public class Main {
 		
 	}
 	
-	/**Function that print all training when user want to add one to his basket.
+	/**Function that print all training when user want to add one to his cart.
 	 * 
-	 * @author Stagiaires10P
 	 * @return void
-	 * 
+	 * @author Sarah Lefort
 	 * */
 	public static void printTrainingsToChoose() {
 		ArrayList<String[]> trainingList = initAllTrainings();
@@ -181,7 +175,7 @@ public class Main {
 	}
 	
 	/** Print menu. It will display all choices for user.
-	 * 
+	 * @author Sarah Lefort
 	 * */
 	public static void printMenu() {
 		System.out.println("Que souhaitez-vous faire ?");
@@ -196,6 +190,11 @@ public class Main {
 
 	}
 	
+	/**Function that add training the user choose, to his cart.
+	 * @param HashMap<Integer, Integer> (cart) , int (answer choose in scanner), ArrayList<String[]> (list of trainings available)
+	 * @return void
+	 * @author Sarah Lefort
+	 * */
 	public static void addTrainingToBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
 
 		if(answer <= trainingList.size()) {
@@ -216,8 +215,14 @@ public class Main {
 	}
 	
 	
-	/**Print basket of user, with courses selected (duration, quantity, price and total price)
+	/**Print cart of user, with courses selected (duration, quantity, price and total price)
 	 * 
+	 * @param 	HashMap<Integer, Integer> (cart) , 
+	 * 			int (answer choose in scanner), 
+	 * 			ArrayList<String[]> (list of trainings available)
+	 * 
+	 * @return void
+	 * @author Sarah Lefort
 	 * */
 	public static void printBasket(HashMap<Integer, Integer> basket, ArrayList<String[]> trainingList) {
 		if(basket.size() > 0) {
@@ -264,7 +269,12 @@ public class Main {
 	
 	/**Delete a training from user's cart.
 	 * Method uses ArrayList of training list to print infos, connecting ids with HashMap Integer (key) and ArrayList.get(...)[0] (id)
-	 * @param HashMap<Integer, Integer>, int, ArrayList<String[]>
+	 * 
+	 * @param 	HashMap<Integer, Integer>, 
+	 * 			int, 
+	 * 			ArrayList<String[]>
+	 * 
+	 * @return void
 	 * @author Sarah Lefort
 	 * */
 	public static void deleteTrainingFromBasket(HashMap<Integer, Integer> basket, int answer, ArrayList<String[]> trainingList) {
@@ -278,7 +288,7 @@ public class Main {
 						basket.remove(answer);
 					}
 					
-					System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".");					
+					System.out.println("Vous avez supprimé " + trainingList.get(answer - 1)[1] + " - " + trainingList.get(answer - 1)[3] + ".\n");					
 				}
 				
 			} else {
@@ -290,8 +300,9 @@ public class Main {
 		}		
 	}
 	
-	/**
-	 * @param HashMap<Integer, Integer>
+	/**When user wants to pay his cart 
+	 * @param 	HashMap<Integer, Integer> (cart)
+	 * 			ArrayList<String[]> (list of trainings)
 	 * @author Sarah Lefort
 	 * */
 	public static void payCart(HashMap<Integer, Integer> basket, ArrayList<String[]> trainingList) {
@@ -312,9 +323,7 @@ public class Main {
 			while(!scanner.hasNextInt()) scanner.next();
 			
 			int choice = scanner.nextInt();
-			
-			////////voir le do while avec la condifiton if choice == 1
-			
+						
 			switch(choice) {
 				case 1:
 					System.out.println("ok");
@@ -332,23 +341,30 @@ public class Main {
 						if(scanner.hasNextInt()) {
 							choice = scanner.nextInt();
 							
-							///////////////////////ATTENTION CONCURRENTMODIFCATION EXCEPTION
-							for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
-								basket.remove(cartEntry.getKey());
+							while(choice > 0) {
+								if(choice > 99999) {
+									for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
+										basket.remove(cartEntry.getKey(), cartEntry.getValue());
+									}
+									
+									System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
+									break;
+									
+								} else {
+									System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres.");
+									choice = scanner.nextInt();
+								}
 							}
 							
-							System.out.println("Opération validée !");
+							
 						}
 						
 					} else if (choice == 2) {
 						System.out.println("Retour au menu.");
 						break;
 					} else {
-						System.out.println("");
+						System.out.println("Merci de saisir 1 ou 2.");
 					}
-					//demander le code de carte bleue
-					//validation
-					//supprimer le contenu du panier
 					break;
 					
 				case 2:
@@ -364,6 +380,14 @@ public class Main {
 		} else {
 			System.out.println("Votre panier est vide.");
 		}
+	}
+	
+	/**print trainings which are not available yet. 
+	 * @return void
+	 * @author Sarah Lefort
+	 * */
+	public static void printFutureTrainings() {
+		
 	}
 	
 	/** Add a course to my list of training
