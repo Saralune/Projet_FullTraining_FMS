@@ -16,6 +16,7 @@ public class Main {
 		
 		//List of trainings
 		ArrayList<String[]> trainingsList = initAllTrainings();
+		ArrayList<String[]> futureTrainingsList = initFutureTrainings();
 		
 		//Cart of user
 		HashMap<Integer, Integer> basket = new HashMap<Integer, Integer>();
@@ -79,11 +80,11 @@ public class Main {
 					break;
 					
 				case 6: //training available in future
-					printFutureTrainings();
+					printFutureTrainings(futureTrainingsList);
 					break;
 					
 				case 7: //what i choose to present
-
+					System.out.println("Ceci est une fonctionnalité mystère. Bisous.\n");
 					break;
 					
 				case 0: //Close the app
@@ -120,6 +121,27 @@ public class Main {
 		trainingList.add(training5);
 		
 		return trainingList;
+	}
+	
+	/**Function that initializes all training available (name, duration, description, price)
+	 * 
+	 * @return void
+	 * @author Sarah Lefort
+	 * */
+	public static ArrayList<String[]> initFutureTrainings() {
+		ArrayList<String[]> futureTrainingList = new ArrayList<>();
+				
+		String[] training1 = {"1", "UML", "5", "Diagrammes & Co", "1000"};
+		String[] training2 = {"2", "Angular", "200", "Tout savoir d'Angular et l'aimer", "30000"};
+		String[] training3 = {"3", "MySQL", "10", "Les bases de données", "200"};
+		String[] training4 = {"4", "Java", "45", "Spring", "2779"};
+		
+		futureTrainingList.add(training1);
+		futureTrainingList.add(training2);
+		futureTrainingList.add(training3);
+		futureTrainingList.add(training4);
+		
+		return futureTrainingList;
 	}
 	
 	/**Function that print all training available (name, duration, description, price)
@@ -386,7 +408,25 @@ public class Main {
 	 * @return void
 	 * @author Sarah Lefort
 	 * */
-	public static void printFutureTrainings() {
+	public static void printFutureTrainings(ArrayList<String[]> futureTrainingList) {
+		String format  = "%1$-8s | %2$-8s | %3$-40s | %4$-6s |\n";
+		
+		System.out.println("\nVoici les formations prochainement disponibles :");
+		
+		System.out.println(String.join("", Collections.nCopies(73, "-")));
+		System.out.format(format, "COURS", "NB/JOURS", "DESCRIPTION", "PRIX");
+		System.out.format(format, "--------", "--------", String.join("", Collections.nCopies(40, "-")), "------");
+		
+		for (int i = 0; i < futureTrainingList.size(); i++) {
+			System.out.format(format, 
+					futureTrainingList.get(i)[1], 
+					futureTrainingList.get(i)[2], 
+					futureTrainingList.get(i)[3], 
+					futureTrainingList.get(i)[4]);
+		}
+		
+		System.out.println(String.join("", Collections.nCopies(73, "-")));
+		System.out.println();
 		
 	}
 	
