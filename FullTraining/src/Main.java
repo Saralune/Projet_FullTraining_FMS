@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -348,43 +347,35 @@ public class Main {
 			int choice = scanner.nextInt();
 						
 			while(choice != 2) {
+				
 				if(choice == 1) {
 					System.out.println("Merci de saisir votre numéro de carte bleue pour valider votre panier. Pour annuler, taper 0.");
 					
 					while(!scanner.hasNextInt()) scanner.next();
 					
-					//if(scanner.hasNextInt()) {
+					while(choice >= 0) {
+						
 						choice = scanner.nextInt();
+						System.out.println();
 						
-						while(choice >= 0) {
-							if(choice > 99999) {
-								 for (Iterator<Map.Entry<Integer, Integer>> itCart = basket.entrySet().iterator();itCart.hasNext();) 
-			                        {
-			            
-			                                itCart.remove();
-			                            
-			                        }
-								
-//								for (Map.Entry<Integer, Integer> cartEntry : basket.entrySet()) {
-//									basket.remove(cartEntry.getKey(), cartEntry.getValue());
-//								}
-								
-								System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
-								choice = 2;
-								break;
-								
-							} else if(choice == 0) {
-								break;
-								
-							} else {
-								System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres. Pour annuler, taper 0.");
-								choice = scanner.nextInt();
-							}
+						if(choice > 99999) {
+							//clear user's cart
+							basket.clear();
+							
+							System.out.println("Merci pour votre achat et bonne(s) formation(s) !\n");
+							choice = 2;
+							break;
+							
+						} else if(choice == 0) {
+							break;
+							
+						} else {
+							System.out.println("Votre numéro de carte doit contenir au moins 6 chiffres. Pour annuler, taper 0.");
 						}
-						
-						
 					}
-				else if(choice == 0) {
+						
+						
+				} else if(choice == 0) {
 					break;
 					
 				} else {
